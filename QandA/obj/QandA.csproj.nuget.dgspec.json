@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/migueljimenez/Projects/QandA/QandA/QandA.csproj": {}
+    "/Users/migueljimenez/Projects/ReactQnA/reactQandA/QandA/QandA.csproj": {}
   },
   "projects": {
-    "/Users/migueljimenez/Projects/QandA/QandA/QandA.csproj": {
+    "/Users/migueljimenez/Projects/ReactQnA/reactQandA/QandA/QandA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/migueljimenez/Projects/QandA/QandA/QandA.csproj",
+        "projectUniqueName": "/Users/migueljimenez/Projects/ReactQnA/reactQandA/QandA/QandA.csproj",
         "projectName": "QandA",
-        "projectPath": "/Users/migueljimenez/Projects/QandA/QandA/QandA.csproj",
+        "projectPath": "/Users/migueljimenez/Projects/ReactQnA/reactQandA/QandA/QandA.csproj",
         "packagesPath": "/Users/migueljimenez/.nuget/packages/",
-        "outputPath": "/Users/migueljimenez/Projects/QandA/QandA/obj/",
+        "outputPath": "/Users/migueljimenez/Projects/ReactQnA/reactQandA/QandA/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/migueljimenez/.config/NuGet/NuGet.Config"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xPyjNlkjZ1FEDL1kF+Qks84Hza8f9kWnz1wayhi3liPdSCSfCL4GWzUpasFi5277NQ6fIq6xjHfGTkTVlylmmg==",
+  "dgSpecHash": "pZrB+4iU5TkrS2JZjGJQ+lPSZqDr9+WtqQBwMkiDnSFu/ErgNOdywZpgdMQXtaQnz8HR2UxyHqsz9QO20pGUUA==",
   "success": true,
-  "projectFilePath": "/Users/migueljimenez/Projects/QandA/QandA/QandA.csproj",
+  "projectFilePath": "/Users/migueljimenez/Projects/ReactQnA/reactQandA/QandA/QandA.csproj",
   "expectedPackageFiles": [
     "/Users/migueljimenez/.nuget/packages/azure.core/1.6.0/azure.core.1.6.0.nupkg.sha512",
     "/Users/migueljimenez/.nuget/packages/azure.identity/1.3.0/azure.identity.1.3.0.nupkg.sha512",
