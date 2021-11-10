@@ -2,6 +2,7 @@
 using QandA.Data;
 using QandA.Data.Models;
 using System.Collections.Generic;
+using System;
 
 namespace QandA.Controllers
 {
@@ -47,7 +48,15 @@ namespace QandA.Controllers
         [HttpPost]
         public ActionResult<QuestionGetSingleResponse> PostQuestion(QuestionPostRequest questionPostRequest)
         {
-            var savedQuestion = _dataRepository.PostQuestion(questionPostRequest);
+            var savedQuestion = _dataRepository.PostQuestion(new QuestionPostFullRequest
+            {
+                Title = questionPostRequest.Title,
+                Content = questionPostRequest.Content,
+                UserId = "1",
+                UserName = "MiguexEvax",
+                Created = DateTime.UtcNow
+            }) ;
+
             return CreatedAtAction(nameof(GetQuestion), new { questionId = savedQuestion.QuestionId }, savedQuestion);
         }
 
@@ -92,7 +101,14 @@ namespace QandA.Controllers
             {
                 return NotFound();
             }
-            var answerSaved = _dataRepository.PostAnswer(answerPostRequest);
+            var answerSaved = _dataRepository.PostAnswer(new AnswerPostFullRequest
+            {
+                QuestionId = answerPostRequest.QuestionId.Value,
+                Content = answerPostRequest.Content,
+                UserId = "1",
+                UserName = "MiguexEvax",
+                Created = DateTime.UtcNow
+            });
             return answerSaved;
         }
 
