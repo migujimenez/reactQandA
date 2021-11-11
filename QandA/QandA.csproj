@@ -22,8 +22,6 @@
     <PackageReference Include="dbup" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Data\Models\" />
     <Folder Include="SQLScripts\" />
   </ItemGroup>
   <ItemGroup>

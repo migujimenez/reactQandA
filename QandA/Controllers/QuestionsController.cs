@@ -19,15 +19,22 @@ namespace QandA.Controllers
 
         #region Questions
         [HttpGet]
-        public IEnumerable<QuestionGetManyResponse> GetQuestions(string search)
+        public IEnumerable<QuestionGetManyResponse> GetQuestions(string search, bool includeAnswers)
         {
-            if (!string.IsNullOrEmpty(search))
+            if (string.IsNullOrEmpty(search))
             {
-                return _dataRepository.GetQuestionsBySearch(search);
+                if (includeAnswers) 
+                { 
+                    return _dataRepository.GetQuestionsWithAnswers(); 
+                }
+                else 
+                {
+                    return _dataRepository.GetQuestions();
+                }
             }
             else
             {
-                return _dataRepository.GetQuestions();
+                return _dataRepository.GetQuestionsBySearch(search);
             }
         }
 
