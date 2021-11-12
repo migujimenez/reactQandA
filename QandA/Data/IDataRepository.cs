@@ -25,5 +25,7 @@ namespace QandA.Data
 
         AnswerGetResponse PostAnswer(AnswerPostFullRequest answer);
         IEnumerable<QuestionGetManyResponse> GetQuestionsWithAnswers();
+
+        IEnumerable<QuestionGetManyResponse> GetQuestionsBySearchWithPaging(string search, int pageNumber, int pageSize); 
     }
 }
