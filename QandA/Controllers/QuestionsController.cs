@@ -39,11 +39,11 @@ namespace QandA.Controllers
             }
         }
 
-        /*[HttpGet("unanswered")]
-        public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions() => _dataRepository.GetUnansweredQuestions();*/
+        [HttpGet("unanswered")]
+        public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions() => _dataRepository.GetUnansweredQuestions();
 
         [HttpGet("unanswered")]
-        public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestions()
+        public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync()
         {
             return await _dataRepository.GetUnansweredQuestionsAsync();
         }
