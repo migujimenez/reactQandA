@@ -3,6 +3,7 @@ using QandA.Data;
 using QandA.Data.Models;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 namespace QandA.Controllers
 {
@@ -38,8 +39,14 @@ namespace QandA.Controllers
             }
         }
 
+        /*[HttpGet("unanswered")]
+        public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions() => _dataRepository.GetUnansweredQuestions();*/
+
         [HttpGet("unanswered")]
-        public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions() => _dataRepository.GetUnansweredQuestions();
+        public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestions()
+        {
+            return await _dataRepository.GetUnansweredQuestionsAsync();
+        }
 
         [HttpGet("{questionId}")]
         public ActionResult<QuestionGetSingleResponse> GetQuestion(int questionId)

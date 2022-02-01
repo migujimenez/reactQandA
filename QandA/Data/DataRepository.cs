@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using QandA.Data.Models;
 using System.Linq;
 using static Dapper.SqlMapper;
+using System.Threading.Tasks;
 
 namespace QandA.Data
 {
@@ -129,6 +130,13 @@ namespace QandA.Data
             connection.Open();
             var parameters = new { Search = search, PageNumber = pageNumber, PageSize = pageSize };
             return connection.Query<QuestionGetManyResponse>(@"EXEC dbo.Question_GetMany_BySearch_WithPaging @Search = @Search, @PageNumber = @PageNumber, @PageSize = @PageSize", parameters);
+        }
+
+        public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+            return await connection.QueryAsync<QuestionGetManyResponse>("EXEC dbo.Question_GetUnanswered");
         }
     }
 }
