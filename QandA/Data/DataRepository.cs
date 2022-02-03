@@ -103,6 +103,14 @@ namespace QandA.Data
             return GetQuestion(questionId);
         }
 
+        public async Task<QuestionGetSingleResponse> PostQuestionAsync(QuestionPostFullRequest question)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+            var questionId = connection.QueryFirst<int>(@"EXEC dbo.Question_Post @Title = @Title, @Content = @Content, @UserId = @UserId, @UserName = @UserName, @Created = @Created", question);
+            return GetQuestion(questionId);
+        }
+
         public QuestionGetSingleResponse PutQuestion(int questionId, QuestionPutRequest question)
         {
             using var connection = new SqlConnection(_connectionString);
