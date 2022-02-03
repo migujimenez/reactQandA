@@ -15,6 +15,7 @@ namespace QandA.Data
         Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync();
 
         QuestionGetSingleResponse GetQuestion(int questionId);
+        Task<QuestionGetSingleResponse> GetQuestionAsync(int questionId);
 
         bool QuestionExists(int questionId);
 

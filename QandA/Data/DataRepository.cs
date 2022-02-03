@@ -49,6 +49,23 @@ namespace QandA.Data
             }
         }
 
+        public async Task<QuestionGetSingleResponse> GetQuestionAsync(int questionId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+            using (GridReader results = connection.QueryMultiple(@"EXEC dbo.Question_GetSingle @QuestionId = @QuestionId; 
+                                                                    EXEC dbo.Answer_Get_ByQuestionId @QuestionId = @QuestionId",
+                                                                    new { QuestionId = questionId }))
+            {
+                var question = results.Read<QuestionGetSingleResponse>().FirstOrDefault();
+                if (question != null)
+                {
+                    question.Answers = results.Read<AnswerGetResponse>().ToList();
+                }
+                return question;
+            }
+        }
+
         public IEnumerable<QuestionGetManyResponse> GetQuestions()
         {
             using var connection = new SqlConnection(_connectionString);
