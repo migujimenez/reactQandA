@@ -452,3 +452,10 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.vs/QandA/config/applicationhost.config
+.vs/QandA/v16/.suo
+QandA/obj/project.assets.json
+QandA/obj/project.nuget.cache
+QandA/obj/QandA.csproj.nuget.dgspec.json
+QandA/obj/QandA.csproj.nuget.g.props
+QandA/obj/QandA.csproj.nuget.g.targets
