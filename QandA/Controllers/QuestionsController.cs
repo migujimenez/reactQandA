@@ -4,9 +4,11 @@ using QandA.Data.Models;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QandA.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
@@ -21,6 +23,7 @@ namespace QandA.Controllers
         }
 
         #region Questions
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<QuestionGetManyResponse> GetQuestions(string search, bool includeAnswers, int page = 1, int pageSize = 20)
         {
@@ -41,15 +44,18 @@ namespace QandA.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("unanswered")]
         public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions() => _dataRepository.GetUnansweredQuestions();
 
+        [AllowAnonymous]
         [HttpGet("unansweredasync")]
         public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync()
         {
             return await _dataRepository.GetUnansweredQuestionsAsync();
         }
 
+        [AllowAnonymous]
         [HttpGet("{questionId}")]
         public ActionResult<QuestionGetSingleResponse> GetQuestion(int questionId)
         {
@@ -98,6 +104,7 @@ namespace QandA.Controllers
             }
         }
 
+        
         [HttpDelete("{questionId}")]
         public ActionResult DeleteQuestion(int questionId)
         {
@@ -117,6 +124,7 @@ namespace QandA.Controllers
         #endregion
 
         #region Answers
+        
         [HttpPost("answer")]
         public ActionResult<AnswerGetResponse> PostAnswer(AnswerPostRequest answerPostRequest)
         {
