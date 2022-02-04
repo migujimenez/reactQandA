@@ -1,3 +1,5 @@
+import { http } from './http';
+
 export interface QuestionData {
   questionId: number;
   title: string;
@@ -65,7 +67,7 @@ const questions: QuestionData[] = [
     questionId: 3,
     title: 'Am I learning React?',
     content:
-      "Yes, I'll keep trying hard because I want an aditional job for earning more money",
+      "Yes, I'll keep trying hard because I want an additional job for earning more money",
     userName: 'Miguex',
     created: new Date(),
     answers: [],
@@ -73,8 +75,16 @@ const questions: QuestionData[] = [
 ];
 
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
-  await wait(500);
-  return questions.filter((q) => q.answers.length === 0);
+  let unansweredQuestions: QuestionData[] = [];
+  const response = await fetch(
+    'https://localhost:17525/api/questions/unanswered',
+  );
+  unansweredQuestions = await response.json();
+
+  return unansweredQuestions.map((question) => ({
+    ...question,
+    created: new Date(question.created),
+  }));
 };
 
 export const getQuestion = async (
