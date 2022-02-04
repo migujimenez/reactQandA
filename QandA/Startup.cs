@@ -66,6 +66,12 @@ namespace QandA
 
             //Access to the http context for the handler
             services.AddHttpContextAccessor();
+
+            //Adding CORS
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins(Configuration["Frontend"])));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +88,8 @@ namespace QandA
 
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
 
             app.UseAuthorization();
@@ -90,6 +98,7 @@ namespace QandA
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
