@@ -36,6 +36,9 @@ namespace QandA
             services.AddControllers();
 
             services.AddScoped<IDataRepository, DataRepository>();
+
+            services.AddMemoryCache();
+            services.AddSingleton<IQuestionCache, QuestionCache>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
