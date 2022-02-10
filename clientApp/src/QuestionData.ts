@@ -1,3 +1,5 @@
+import { http } from './http';
+
 export interface QuestionData {
   questionId: number;
   title: string;
