@@ -77,8 +77,13 @@ const questions: QuestionData[] = [
 ];
 
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
-  await wait(500);
-  return questions.filter((q) => q.answers.length === 0);
+  let unansweredQuestions: QuestionData[] = [];
+
+  const response = await fetch(
+    'http://localhost:44378/api/questions/unanswered',
+  );
+  unansweredQuestions = await response.json();
+  return unansweredQuestions;
 };
 
 const wait = async (ms: number): Promise<void> => {
