@@ -1,5 +1,3 @@
-import { http } from './http';
-
 export interface QuestionData {
   questionId: number;
   title: string;
@@ -43,20 +41,6 @@ export const mapQuestionFromServer = (
     : [],
 });
 
-export interface PostQuestionData {
-  title: string;
-  content: string;
-  userName: string;
-  created: Date;
-}
-
-export interface PostAnswerData {
-  questionId: number;
-  content: string;
-  userName: string;
-  created: Date;
-}
-
 const questions: QuestionData[] = [
   {
     questionId: 1,
@@ -90,39 +74,15 @@ const questions: QuestionData[] = [
     created: new Date(),
     answers: [],
   },
-  {
-    questionId: 3,
-    title: 'Am I learning React?',
-    content:
-      "Yes, I'll keep trying hard because I want an additional job for earning more money",
-    userName: 'Miguex',
-    created: new Date(),
-    answers: [],
-  },
 ];
 
-export const mapQuestionFromServer = (
-  question: QuestionDataFromServer,
-): QuestionData => ({
-  ...question,
-  created: new Date(question.created),
-  answers: question.answers
-    ? question.answers.map((answer) => ({
-        ...answer,
-        created: new Date(answer.created),
-      }))
-    : [],
-});
-
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
-  const result = await http<QuestionDataFromServer[]>({
-    path: '/questions/unanswered',
-  });
-  if (result.ok && result.body) {
-    return result.body.map(mapQuestionFromServer);
-  } else {
-    return [];
-  }
+  await wait(500);
+  return questions.filter((q) => q.answers.length === 0);
+};
+
+const wait = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 export const getQuestion = async (
@@ -144,6 +104,13 @@ export const searchQuestions = async (
   );
 };
 
+export interface PostQuestionData {
+  title: string;
+  content: string;
+  userName: string;
+  created: Date;
+}
+
 export const postQuestion = async (
   question: PostQuestionData,
 ): Promise<QuestionData | undefined> => {
@@ -158,6 +125,13 @@ export const postQuestion = async (
   return newQuestion;
 };
 
+export interface PostAnswerData {
+  questionId: number;
+  content: string;
+  userName: string;
+  created: Date;
+}
+
 export const postAnswer = async (
   answer: PostAnswerData,
 ): Promise<AnswerData | undefined> => {
@@ -171,8 +145,4 @@ export const postAnswer = async (
   };
   question.answers.push(answerInQuestion);
   return answerInQuestion;
-};
-
-const wait = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 };

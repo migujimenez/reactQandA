@@ -23,10 +23,10 @@ namespace QandA.Controllers
         private readonly IHttpClientFactory _clientFactory;
         private readonly string _auth0UserInfo;
 
-        public QuestionsController(IDataRepository dataRepository, IQuestionCache questionCache, IHttpClientFactory clientFactory, IConfiguration configuration)
+        public QuestionsController(IDataRepository dataRepository, IQuestionCache cache, IHttpClientFactory clientFactory, IConfiguration configuration)
         {
             _dataRepository = dataRepository;
-            _cache = questionCache;
+            _cache = cache;
             _clientFactory = clientFactory;
             _auth0UserInfo = $"{configuration["Auth0:Authority"]}userinfo";
         }
@@ -38,11 +38,11 @@ namespace QandA.Controllers
         {
             if (string.IsNullOrEmpty(search))
             {
-                if (includeAnswers) 
-                { 
-                    return await _dataRepository.GetQuestionsWithAnswersAsync(); 
+                if (includeAnswers)
+                {
+                    return await _dataRepository.GetQuestionsWithAnswersAsync();
                 }
-                else 
+                else
                 {
                     return await _dataRepository.GetQuestionsAsync();
                 }
@@ -53,26 +53,17 @@ namespace QandA.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet("unanswered")]
         public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestions()
         {
             return await _dataRepository.GetUnansweredQuestionsAsync();
         }
 
-        [AllowAnonymous]
-        [HttpGet("unansweredasync")]
-        public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync()
-        {
-            return await _dataRepository.GetUnansweredQuestionsAsync();
-        }
-
-        [AllowAnonymous]
         [HttpGet("{questionId}")]
         public async Task<ActionResult<QuestionGetSingleResponse>> GetQuestion(int questionId)
         {
             var question = _cache.Get(questionId);
-            if(question == null)
+            if (question == null)
             {
                 question = await _dataRepository.GetQuestionAsync(questionId);
                 if (question == null)
@@ -99,23 +90,6 @@ namespace QandA.Controllers
             return CreatedAtAction(nameof(GetQuestion), new { questionId = savedQuestion.QuestionId }, savedQuestion);
         }
 
-
-        [HttpPost]
-        public async Task <ActionResult<QuestionGetSingleResponse>> PostQuestionAsync(QuestionPostRequest questionPostRequest)
-        {
-            var savedQuestion = await _dataRepository.PostQuestionAsync(new QuestionPostFullRequest
-            {
-                Title = questionPostRequest.Title,
-                Content = questionPostRequest.Content,
-                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
-                UserName = await GetUserName(),
-                Created = DateTime.UtcNow
-            }) ;
-
-            return CreatedAtAction(nameof(GetQuestion), new { questionId = savedQuestion.QuestionId }, savedQuestion);
-        }
-
-        [Authorize(Policy = "MustBeQuestionAuthor")]
         [HttpPut("{questionId}")]
         public async Task<ActionResult<QuestionGetSingleResponse>> PutQuestion(int questionId, QuestionPutRequest questionPutRequest)
         {
@@ -132,7 +106,6 @@ namespace QandA.Controllers
             }
         }
 
-        [Authorize(Policy = "MustBeQuestionAuthor")]
         [HttpDelete("{questionId}")]
         public async Task<ActionResult> DeleteQuestion(int questionId)
         {
@@ -152,7 +125,6 @@ namespace QandA.Controllers
         #endregion
 
         #region Answers
-        
         [HttpPost("answer")]
         public async Task<ActionResult<AnswerGetResponse>> PostAnswer(AnswerPostRequest answerPostRequest)
         {
@@ -185,30 +157,6 @@ namespace QandA.Controllers
             var response = await client.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
-            {
-                var jsonContent = await response.Content.ReadAsStringAsync();
-                var user = JsonSerializer.Deserialize<User>(jsonContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return user.Name;
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        #endregion
-
-
-        #region Private methods
-
-        private async Task<string> GetUserName()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, _auth0UserInfo);
-            request.Headers.Add("Authorization", Request.Headers["Authorization"].First());
-            var client = _clientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-
-            if(response.IsSuccessStatusCode)
             {
                 var jsonContent = await response.Content.ReadAsStringAsync();
                 var user = JsonSerializer.Deserialize<User>(jsonContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

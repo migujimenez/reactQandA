@@ -39,7 +39,6 @@ namespace QandA
 
             services.AddControllers();
 
-            //Dependencies
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddScoped<IAuthorizationHandler, MustBeQuestionAuthorHandler>();
 
@@ -93,7 +92,6 @@ namespace QandA
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }

@@ -4,6 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>c683266b-4fb5-47cf-987f-84faa0f05a57</UserSecretsId>
+    <StartupObject>QandA.Program</StartupObject>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
