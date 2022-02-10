@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using QandA.Authorization;
+using Microsoft.OpenApi.Models;
 
 namespace QandA
 {
@@ -38,6 +39,8 @@ namespace QandA
             }
 
             services.AddControllers();
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "QandA", Version = "v1" }));
 
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddScoped<IAuthorizationHandler, MustBeQuestionAuthorHandler>();
@@ -74,6 +77,8 @@ namespace QandA
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QandA v1"));
             }
             else
             {
