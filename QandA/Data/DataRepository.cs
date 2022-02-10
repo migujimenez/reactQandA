@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;

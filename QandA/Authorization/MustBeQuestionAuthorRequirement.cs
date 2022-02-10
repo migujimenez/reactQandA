@@ -6,7 +6,6 @@ namespace QandA.Authorization
     {
         public MustBeQuestionAuthorRequirement()
         {
-
         }
     }
 }

@@ -19,7 +19,6 @@ export const HomePage = () => {
       setQuestionsLoading(false);
     };
     doGetUnansweredeQuestions();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log('rendered');
@@ -27,7 +26,6 @@ export const HomePage = () => {
   const navigate = useNavigate();
 
   const handleAskQuestionClick = () => {
-    //console.log('TODO - move to the AskPage');
     navigate('ask');
   };
 

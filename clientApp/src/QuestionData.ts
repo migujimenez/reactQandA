@@ -1,3 +1,5 @@
+import { http } from './http';
+
 export interface QuestionData {
   questionId: number;
   title: string;
@@ -92,16 +94,35 @@ const questions: QuestionData[] = [
     questionId: 3,
     title: 'Am I learning React?',
     content:
-      "Yes, I'll keep trying hard because I want an aditional job for earning more money",
+      "Yes, I'll keep trying hard because I want an additional job for earning more money",
     userName: 'Miguex',
     created: new Date(),
     answers: [],
   },
 ];
 
+export const mapQuestionFromServer = (
+  question: QuestionDataFromServer,
+): QuestionData => ({
+  ...question,
+  created: new Date(question.created),
+  answers: question.answers
+    ? question.answers.map((answer) => ({
+        ...answer,
+        created: new Date(answer.created),
+      }))
+    : [],
+});
+
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
-  await wait(500);
-  return questions.filter((q) => q.answers.length === 0);
+  const result = await http<QuestionDataFromServer[]>({
+    path: '/questions/unanswered',
+  });
+  if (result.ok && result.body) {
+    return result.body.map(mapQuestionFromServer);
+  } else {
+    return [];
+  }
 };
 
 export const getQuestion = async (
