@@ -79,16 +79,14 @@ const questions: QuestionData[] = [
 ];
 
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
-  let unansweredQuestions: QuestionData[] = [];
-
-  const response = await fetch(
-    'https://localhost:44378/api/questions/unanswered',
-  );
-  unansweredQuestions = await response.json();
-  return unansweredQuestions.map((question) => ({
-    ...question,
-    created: new Date(question.created),
-  }));
+  const result = await http<QuestionDataFromServer[]>({
+    path: '/questions/unanswered',
+  });
+  if (result.ok && result.body) {
+    return result.body.map(mapQuestionFromServer);
+  } else {
+    return [];
+  }
 };
 
 const wait = async (ms: number): Promise<void> => {
