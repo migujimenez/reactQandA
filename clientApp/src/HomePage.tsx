@@ -7,33 +7,16 @@ import { Page } from './Page';
 import { PageTitle } from './PageTitle';
 import { PrimaryButton } from './Styles';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  gettingUnansweredQuestionsAction,
-  gotUnansweredQuestionsAction,
-  AppState,
-} from './Store';
-import { statement } from '@babel/template';
 
 export const HomePage = () => {
-  const dispatch = useDispatch();
-  //const [questions, setQuestions] = React.useState<QuestionData[]>([]);
-  const questions = useSelector(
-    (state: AppState) => state.questions.unanswered,
-  );
-
-  //const [questionsLoading, setQuestionsLoading] = React.useState(true);
-  const questionsLoading = useSelector(
-    (state: AppState) => state.questions.loading,
-  );
+  const [questions, setQuestions] = React.useState<QuestionData[]>([]);
+  const [questionsLoading, setQuestionsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const doGetUnansweredeQuestions = async () => {
-      dispatch(gettingUnansweredQuestionsAction());
       const unansweredQuestions = await getUnansweredQuestions();
-      dispatch(gotUnansweredQuestionsAction(unansweredQuestions));
-      //setQuestions(unansweredQuestions);
-      //setQuestionsLoading(false);
+      setQuestions(unansweredQuestions);
+      setQuestionsLoading(false);
     };
     doGetUnansweredeQuestions();
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,6 +56,3 @@ export const HomePage = () => {
     </Page>
   );
 };
-function state(state: any, AppState: any) {
-  throw new Error('Function not implemented.');
-}
