@@ -43,11 +43,9 @@ namespace QandA
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddScoped<IAuthorizationHandler, MustBeQuestionAuthorHandler>();
 
-            //Cache
             services.AddMemoryCache();
             services.AddSingleton<IQuestionCache, QuestionCache>();
 
-            //Auth0
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,20 +56,17 @@ namespace QandA
                 options.Audience = Configuration["Auth0:Audience"];
             });
 
-            //For Http Calls - in this case Auth0
             services.AddHttpClient();
 
-            //Authorization policy
             services.AddAuthorization(options => options.AddPolicy("MustBeQuestionAuthor", policy => policy.Requirements.Add(new MustBeQuestionAuthorRequirement())));
 
-            //Access to the http context for the handler
             services.AddHttpContextAccessor();
 
-            //Adding CORS
-            services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            builder
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins(Configuration["Frontend"])));
+            .WithOrigins(Configuration["FrontEnd"])));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

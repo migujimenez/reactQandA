@@ -6,6 +6,22 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+const buttonStyle = css`
+  font-family: ${fontfamily};
+  font-size: ${fontSize};
+  padding: 5px 10px;
+  background-color: transparent;
+  color: ${gray2};
+  text-decoration: none;
+  cursor: pointer;
+  :focus {
+    outline-color: ${gray5};
+  }
+  span {
+    margin-left: 7px;
+  }
+`;
+
 type FormData = { search: string };
 
 export const Header = () => {
@@ -52,7 +68,6 @@ export const Header = () => {
           defaultValue={criteria}
           type="text"
           placeholder="Search..."
-          //onChange={handleSearchInputChange}
           css={css`
             box-sizing: border-box;
             font-family: ${fontfamily};
@@ -70,30 +85,16 @@ export const Header = () => {
           `}
         />
       </form>
-      <Link
-        to="./signin"
-        css={css`
-          font-family: ${fontfamily};
-          font-size: ${fontSize};
-          padding: 5px 10px;
-          background-color: transparent;
-          color: ${gray2};
-          text-decoration: none;
-          cursor: pointer;
-          :focus {
-            outline-color: ${gray5};
-          }
-        `}
-      >
-        <UserIcon />
-        <span
-          css={css`
-            margin-left: 7px;
-          `}
-        >
-          Sign In
-        </span>
-      </Link>
+      <div>
+        <Link to="signout" css={buttonStyle}>
+          <UserIcon />
+          <span>Sign Out</span>
+        </Link>
+        <Link to="signin" css={buttonStyle}>
+          <UserIcon />
+          <span>Sign In</span>
+        </Link>
+      </div>
     </div>
   );
 };

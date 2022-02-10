@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using QandA.Data;
 using QandA.Data.Models;
 using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
@@ -34,28 +34,31 @@ namespace QandA.Controllers
         #region Questions
         [AllowAnonymous]
         [HttpGet]
-        public IEnumerable<QuestionGetManyResponse> GetQuestions(string search, bool includeAnswers, int page = 1, int pageSize = 20)
+        public async Task<IEnumerable<QuestionGetManyResponse>> GetQuestions(string search, bool includeAnswers, int page = 1, int pageSize = 20)
         {
             if (string.IsNullOrEmpty(search))
             {
                 if (includeAnswers) 
                 { 
-                    return _dataRepository.GetQuestionsWithAnswers(); 
+                    return await _dataRepository.GetQuestionsWithAnswersAsync(); 
                 }
                 else 
                 {
-                    return _dataRepository.GetQuestions();
+                    return await _dataRepository.GetQuestionsAsync();
                 }
             }
             else
             {
-                return _dataRepository.GetQuestionsBySearchWithPaging(search, page, pageSize);
+                return await _dataRepository.GetQuestionsBySearchWithPagingAsync(search, page, pageSize);
             }
         }
 
         [AllowAnonymous]
         [HttpGet("unanswered")]
-        public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions() => _dataRepository.GetUnansweredQuestions();
+        public async Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestions()
+        {
+            return await _dataRepository.GetUnansweredQuestionsAsync();
+        }
 
         [AllowAnonymous]
         [HttpGet("unansweredasync")]
@@ -66,33 +69,32 @@ namespace QandA.Controllers
 
         [AllowAnonymous]
         [HttpGet("{questionId}")]
-        public ActionResult<QuestionGetSingleResponse> GetQuestion(int questionId)
+        public async Task<ActionResult<QuestionGetSingleResponse>> GetQuestion(int questionId)
         {
-            //var question = _dataRepository.GetQuestion(questionId);
             var question = _cache.Get(questionId);
-            if (question == null)
+            if(question == null)
             {
-                question = _dataRepository.GetQuestion(questionId);
+                question = await _dataRepository.GetQuestionAsync(questionId);
                 if (question == null)
                 {
                     return NotFound();
                 }
                 _cache.Set(question);
             }
-            return Ok(question);
+            return question;
         }
 
         [HttpPost]
-        public ActionResult<QuestionGetSingleResponse> PostQuestion(QuestionPostRequest questionPostRequest)
+        public async Task<ActionResult<QuestionGetSingleResponse>> PostQuestion(QuestionPostRequest questionPostRequest)
         {
-            var savedQuestion = _dataRepository.PostQuestion(new QuestionPostFullRequest
+            var savedQuestion = await _dataRepository.PostQuestionAsync(new QuestionPostFullRequest
             {
                 Title = questionPostRequest.Title,
                 Content = questionPostRequest.Content,
-                UserId = "1",
-                UserName = "MiguexEvax",
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                UserName = await GetUserName(),
                 Created = DateTime.UtcNow
-            }) ;
+            });
 
             return CreatedAtAction(nameof(GetQuestion), new { questionId = savedQuestion.QuestionId }, savedQuestion);
         }
@@ -115,33 +117,33 @@ namespace QandA.Controllers
 
         [Authorize(Policy = "MustBeQuestionAuthor")]
         [HttpPut("{questionId}")]
-        public ActionResult<QuestionGetSingleResponse> PutQuestion(int questionId, QuestionPutRequest questionPutRequest)
+        public async Task<ActionResult<QuestionGetSingleResponse>> PutQuestion(int questionId, QuestionPutRequest questionPutRequest)
         {
-            var question = _dataRepository.GetQuestion(questionId);
+            var question = await _dataRepository.GetQuestionAsync(questionId);
             if (question == null)
             { return NotFound(); }
             else
             {
                 questionPutRequest.Title = string.IsNullOrEmpty(questionPutRequest.Title) ? question.Title : questionPutRequest.Title;
                 questionPutRequest.Content = string.IsNullOrEmpty(questionPutRequest.Content) ? question.Content : questionPutRequest.Content;
-                var savedQuestion = _dataRepository.PutQuestion(questionId, questionPutRequest);
-                _cache.Remove(questionId);
+                var savedQuestion = await _dataRepository.PutQuestionAsync(questionId, questionPutRequest);
+                _cache.Remove(savedQuestion.QuestionId);
                 return savedQuestion;
             }
         }
 
         [Authorize(Policy = "MustBeQuestionAuthor")]
         [HttpDelete("{questionId}")]
-        public ActionResult DeleteQuestion(int questionId)
+        public async Task<ActionResult> DeleteQuestion(int questionId)
         {
-            var question = _dataRepository.GetQuestion(questionId);
+            var question = await _dataRepository.GetQuestionAsync(questionId);
             if (question == null)
             {
                 return NotFound();
             }
             else
             {
-                _dataRepository.DeleteQuestion(questionId);
+                await _dataRepository.DeleteQuestionAsync(questionId);
                 _cache.Remove(questionId);
                 return NoContent();
             }
@@ -152,25 +154,47 @@ namespace QandA.Controllers
         #region Answers
         
         [HttpPost("answer")]
-        public ActionResult<AnswerGetResponse> PostAnswer(AnswerPostRequest answerPostRequest)
+        public async Task<ActionResult<AnswerGetResponse>> PostAnswer(AnswerPostRequest answerPostRequest)
         {
-            var questionExists = _dataRepository.QuestionExists(answerPostRequest.QuestionId.Value);
+            var questionExists = await _dataRepository.QuestionExistsAsync(answerPostRequest.QuestionId.Value);
             if (questionExists == false)
             {
                 return NotFound();
             }
-            var answerSaved = _dataRepository.PostAnswer(new AnswerPostFullRequest
+            var answerSaved = await _dataRepository.PostAnswerAsync(new AnswerPostFullRequest
             {
                 QuestionId = answerPostRequest.QuestionId.Value,
                 Content = answerPostRequest.Content,
-                UserId = "1",
-                UserName = "MiguexEvax",
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                UserName = await GetUserName(),
                 Created = DateTime.UtcNow
             });
             _cache.Remove(answerPostRequest.QuestionId.Value);
             return answerSaved;
         }
 
+
+        #endregion
+
+        #region Private methods
+        private async Task<string> GetUserName()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, _auth0UserInfo);
+            request.Headers.Add("Authorization", Request.Headers["Authorization"].First());
+            var client = _clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var user = JsonSerializer.Deserialize<User>(jsonContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return user.Name;
+            }
+            else
+            {
+                return "";
+            }
+        }
 
         #endregion
 

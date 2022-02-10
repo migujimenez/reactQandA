@@ -30,6 +30,19 @@ export interface AnswerData {
   created: Date;
 }
 
+export const mapQuestionFromServer = (
+  question: QuestionDataFromServer,
+): QuestionData => ({
+  ...question,
+  created: new Date(question.created),
+  answers: question.answers
+    ? question.answers.map((answer) => ({
+        ...answer,
+        created: new Date(answer.created),
+      }))
+    : [],
+});
+
 export interface PostQuestionData {
   title: string;
   content: string;

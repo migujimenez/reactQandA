@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using QandA.Data;
@@ -29,7 +29,6 @@ namespace QandA.Authorization
             var questionId = _httpContextAccessor.HttpContext.Request.RouteValues["questionId"];
             int questionIdAsInt = Convert.ToInt32(questionId);
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             var question = await _dataRepository.GetQuestionAsync(questionIdAsInt);
             if(question == null)
             {

@@ -7,6 +7,5 @@ namespace QandA.Data
         QuestionGetSingleResponse Get(int questionId);
         void Remove(int questionId);
         void Set(QuestionGetSingleResponse question);
-
     }
 }

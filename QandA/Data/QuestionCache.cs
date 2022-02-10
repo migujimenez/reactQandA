@@ -10,6 +10,7 @@ namespace QandA.Data
     public class QuestionCache : IQuestionCache
     {
         private MemoryCache _cache { get; set; }
+
         public QuestionCache()
         {
             _cache = new MemoryCache(new MemoryCacheOptions { SizeLimit = 100 });
@@ -24,17 +25,15 @@ namespace QandA.Data
             return question;
         }
 
+        public void Set(QuestionGetSingleResponse question)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSize(1);
+            _cache.Set(GetCacheKey(question.QuestionId), question, cacheEntryOptions);
+        }
+
         public void Remove(int questionId)
         {
             _cache.Remove(GetCacheKey(questionId));
-        }
-
-        public void Set(QuestionGetSingleResponse question)
-        {
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSize(1)
-                .SetSlidingExpiration(TimeSpan.FromMinutes(30));
-            _cache.Set(GetCacheKey(question.QuestionId), question, cacheEntryOptions);
         }
     }
 }

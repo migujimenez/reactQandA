@@ -7,7 +7,6 @@ import { Page } from './Page';
 import { PageTitle } from './PageTitle';
 import { PrimaryButton } from './Styles';
 import { useNavigate } from 'react-router-dom';
-import { statement } from '@babel/template';
 
 export const HomePage = () => {
   const [questions, setQuestions] = React.useState<QuestionData[]>([]);
@@ -55,6 +54,3 @@ export const HomePage = () => {
     </Page>
   );
 };
-function state(state: any, AppState: any) {
-  throw new Error('Function not implemented.');
-}
