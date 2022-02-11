@@ -14,12 +14,12 @@ export const primary2 = '#824c67';
 export const accent1 = '#dbb365';
 export const accent2 = '#efd197';
 
-export const fontfamily = "'Segoe UI', 'Helvetica Neue', sans-serif";
+export const fontFamily = "'Segoe UI', 'Helvetica Neue', sans-serif";
 export const fontSize = '16px';
 
 const baseFieldCss = css`
   box-sizing: border-box;
-  font-family: ${fontfamily};
+  font-family: ${fontFamily};
   font-size: ${fontSize};
   margin-bottom: 5px;
   padding: 8px 10px;
@@ -41,7 +41,7 @@ export const PrimaryButton = styled.button`
   border-color: ${primary2};
   border-style: solid;
   border-radius: 5px;
-  font-family: ${fontfamily};
+  font-family: ${fontFamily};
   font-size: ${fontSize};
   padding: 5px 10px;
   color: white;
@@ -103,4 +103,8 @@ export const SubmissionSuccess = styled.div`
 export const SubmissionFailure = styled.div`
   margin-top: 10px;
   color: red;
+`;
+
+export const StatusText = styled.div`
+  text-align: center;
 `;

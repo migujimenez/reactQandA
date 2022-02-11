@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { fontfamily, fontSize, gray1, gray2, gray5 } from './Styles';
+import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 import { UserIcon } from './Icons';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 const buttonStyle = css`
-  font-family: ${fontfamily};
+  font-family: ${fontFamily};
   font-size: ${fontSize};
   padding: 5px 10px;
   background-color: transparent;
@@ -70,7 +70,7 @@ export const Header = () => {
           placeholder="Search..."
           css={css`
             box-sizing: border-box;
-            font-family: ${fontfamily};
+            font-family: ${fontFamily};
             font-size: ${fontSize};
             padding: 8px 10px;
             border: 1px solid ${gray5};
