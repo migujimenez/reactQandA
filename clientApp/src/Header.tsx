@@ -5,6 +5,7 @@ import { UserIcon } from './Icons';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useAuth } from './Auth';
 
 const buttonStyle = css`
   font-family: ${fontFamily};
@@ -29,10 +30,10 @@ export const Header = () => {
   const { register, handleSubmit } = useForm<FormData>();
   const [searchParams] = useSearchParams();
   const criteria = searchParams.get('criteria') || '';
-
   const submitForm = ({ search }: FormData) => {
     navigate(`search?criteria=${search}`);
   };
+  const { isAuthenticated, user, loading } = useAuth();
 
   return (
     <div
@@ -86,14 +87,21 @@ export const Header = () => {
         />
       </form>
       <div>
-        <Link to="signout" css={buttonStyle}>
-          <UserIcon />
-          <span>Sign Out</span>
-        </Link>
-        <Link to="signin" css={buttonStyle}>
-          <UserIcon />
-          <span>Sign In</span>
-        </Link>
+        {!loading &&
+          (isAuthenticated ? (
+            <div>
+              <span>{user!.name}</span>
+              <Link to="signout" css={buttonStyle}>
+                <UserIcon />
+                <span>Sign Out</span>
+              </Link>
+            </div>
+          ) : (
+            <Link to="signin" css={buttonStyle}>
+              <UserIcon />
+              <span>Sign In</span>
+            </Link>
+          ))}
       </div>
     </div>
   );
