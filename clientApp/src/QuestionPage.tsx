@@ -37,13 +37,19 @@ export const QuestionPage = () => {
   } = useForm<FormData>();
 
   React.useEffect(() => {
+    let cancelled = false;
     const doGetQuestion = async (questionId: number) => {
       const foundQuestion = await getQuestion(questionId);
-      setQuestion(foundQuestion);
+      if (!cancelled) {
+        setQuestion(foundQuestion);
+      }
     };
     if (questionId) {
       doGetQuestion(Number(questionId));
     }
+    return () => {
+      cancelled = true;
+    };
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionId]);
 
