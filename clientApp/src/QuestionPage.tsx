@@ -18,6 +18,7 @@ import { getQuestion, postAnswer, QuestionData } from './QuestionData';
 import { AnswerList } from './AnswerList';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useAuth } from './Auth';
 
 type FormData = {
   content: string;
@@ -56,6 +57,8 @@ export const QuestionPage = () => {
     setSuccessfullySubmitted(result ? true : false);
   };
 
+  const { isAuthenticated } = useAuth();
+
   return (
     <Page>
       <div
@@ -93,40 +96,45 @@ export const QuestionPage = () => {
                 color: ${gray3};
               `}
             >
-              {`Asked by Lerox ${question.userName} on
+              {`Asked by NupiLerox ${question.userName} on
   ${question.created.toLocaleDateString()} 
   ${question.created.toLocaleTimeString()}`}
             </div>
             <AnswerList data={question.answers} />
-            <form
-              onSubmit={handleSubmit(submitForm)}
-              css={css`
-                margin-top: 20px;
-              `}
-            >
-              <FieldSet disabled={isSubmitting || successfullySubmitted}>
-                <FieldContainer>
-                  <FieldLabel htmlFor="content">Your Answer</FieldLabel>
-                  <FieldTextArea
-                    {...register('content', { required: true, minLength: 50 })}
-                    id="content"
-                  ></FieldTextArea>
-                  {errors.content && errors.content.type === 'required' && (
-                    <FieldError>You must enter the answer</FieldError>
+            {isAuthenticated && (
+              <form
+                onSubmit={handleSubmit(submitForm)}
+                css={css`
+                  margin-top: 20px;
+                `}
+              >
+                <FieldSet disabled={isSubmitting || successfullySubmitted}>
+                  <FieldContainer>
+                    <FieldLabel htmlFor="content">Your Answer</FieldLabel>
+                    <FieldTextArea
+                      {...register('content', {
+                        required: true,
+                        minLength: 50,
+                      })}
+                      id="content"
+                    ></FieldTextArea>
+                    {errors.content && errors.content.type === 'required' && (
+                      <FieldError>You must enter the answer</FieldError>
+                    )}
+                  </FieldContainer>
+                  <FormButtonContainer>
+                    <PrimaryButton type="submit">
+                      Submit your answer
+                    </PrimaryButton>
+                  </FormButtonContainer>
+                  {successfullySubmitted && (
+                    <SubmissionSuccess>
+                      Your answer was successfully submitted
+                    </SubmissionSuccess>
                   )}
-                </FieldContainer>
-                <FormButtonContainer>
-                  <PrimaryButton type="submit">
-                    Submit your answer
-                  </PrimaryButton>
-                </FormButtonContainer>
-                {successfullySubmitted && (
-                  <SubmissionSuccess>
-                    Your answer was successfully submitted
-                  </SubmissionSuccess>
-                )}
-              </FieldSet>
-            </form>
+                </FieldSet>
+              </form>
+            )}
           </React.Fragment>
         )}
       </div>
