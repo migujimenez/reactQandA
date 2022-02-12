@@ -15,14 +15,14 @@ export const HomePage = () => {
 
   React.useEffect(() => {
     let cancelled = false;
-    const doGetUnansweredeQuestions = async () => {
+    const doGetUnansweredQuestions = async () => {
       const unansweredQuestions = await getUnansweredQuestions();
       if (!cancelled) {
         setQuestions(unansweredQuestions);
         setQuestionsLoading(false);
       }
     };
-    doGetUnansweredeQuestions();
+    doGetUnansweredQuestions();
     return () => {
       cancelled = true;
     };

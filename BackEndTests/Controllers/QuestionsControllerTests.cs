@@ -92,5 +92,78 @@ namespace QandA_BackEndTests.Controllers
             var actionResult = Assert.IsType<ActionResult<QuestionGetSingleResponse>>(result);
             Assert.IsType<NotFoundResult>(actionResult.Result);
         }
+
+        [Fact]
+        public async void GetQuestion_WhenQuestionIsFound_ReturnsQuestion()
+        {
+            var mockQuestion = new QuestionGetSingleResponse
+            {
+                QuestionId = 1,
+                Title = "test"
+            };
+
+            var mockDataRepository = new Mock<IDataRepository>();
+            mockDataRepository.Setup(repo => repo.GetQuestionAsync(1)).Returns(() => Task.FromResult(mockQuestion));
+
+            var mockQuestionCache = new Mock<IQuestionCache>();
+            mockQuestionCache.Setup(cache => cache.Get(1)).Returns(() => null);
+
+            var mockConfigurationRoot = new Mock<IConfigurationRoot>();
+            mockConfigurationRoot.Setup(config => config[It.IsAny<string>()]).Returns("some setting");
+
+            var questionsController = new QuestionsController(mockDataRepository.Object, mockQuestionCache.Object, null, mockConfigurationRoot.Object);
+
+            var result = await questionsController.GetQuestion(1);
+
+            var actionResult = Assert.IsType<ActionResult<QuestionGetSingleResponse>>(result);
+            var questionResult = Assert.IsType<QuestionGetSingleResponse>(actionResult.Value);
+            Assert.Equal(1, questionResult.QuestionId);
+        }
+
+        [Fact]
+        public async void GetUnansweredQuestions_ReturnsAllAnswers()
+        {
+            var mockQuestions = new List<QuestionGetManyResponse>();
+            for (int i = 0; i < 10; i++)
+            {
+                mockQuestions.Add(new QuestionGetManyResponse
+                {
+                    QuestionId = 1,
+                    Title = $"Test title {i}",
+                    Content = $"Test content {i}",
+                    UserName = "User1",
+                    Answers = new List<AnswerGetResponse>()
+                });
+            }
+
+            var mockDataRepository = new Mock<IDataRepository>();
+            mockDataRepository.Setup(repo => repo.GetUnansweredQuestionsAsync()).Returns(() => Task.FromResult(mockQuestions.AsEnumerable()));
+
+            var mockConfigurationRoot = new Mock<IConfigurationRoot>();
+            mockConfigurationRoot.Setup(config => config[It.IsAny<string>()]).Returns("some setting");
+
+            var questionsController = new QuestionsController(mockDataRepository.Object, null, null, mockConfigurationRoot.Object);
+
+            var result = await questionsController.GetUnansweredQuestions();
+
+            Assert.Equal(10, result.Count());
+            mockDataRepository.Verify(mock => mock.GetUnansweredQuestionsAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async void GetUnansweredQuestions_Returns404()
+        {
+            var mockDataRepository = new Mock<IDataRepository>();
+            mockDataRepository.Setup(repo => repo.GetUnansweredQuestionsAsync()).Returns(() => Task.FromResult(default(IEnumerable<QuestionGetManyResponse>)));
+
+            var mockConfigurationRoot = new Mock<IConfigurationRoot>();
+            mockConfigurationRoot.Setup(config => config[It.IsAny<string>()]).Returns("some setting");
+
+            var questionsController = new QuestionsController(mockDataRepository.Object, null, null, mockConfigurationRoot.Object);
+
+            var result = await questionsController.GetUnansweredQuestions();
+
+            Assert.Null(result);
+        }
     }
 }
