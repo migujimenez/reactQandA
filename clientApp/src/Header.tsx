@@ -61,6 +61,15 @@ export const Header = () => {
         `}
       >
         Q & A
+        <span
+          css={css`
+            margin-left: 5px;
+            font-size: 14px;
+            font-weight: normal;
+          `}
+        >
+          {process.env.REACT_APP_ENV || 'dev'}
+        </span>
       </Link>
 
       <form onSubmit={handleSubmit(submitForm)}>
