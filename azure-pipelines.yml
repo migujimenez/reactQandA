@@ -14,14 +14,17 @@ variables:
   #workingDirectory: '$(Build.SourcesDirectory)/qanda'
 
 steps:
-  - task: UseDotNet@2
+  - task: CmdLine@2
     inputs:
-      packageType: "sdk"
-      version: "5.0.100"
-  - script: |
-      echo  '$(System.DefaultWorkingDirectory)'
-      dir
-      dir qanda
+      script: |
+        echo  '$(System.DefaultWorkingDirectory)'
+        dir
+        dir qand
+
+#  - task: UseDotNet@2
+#    inputs:
+#      packageType: "sdk"
+#      version: "5.0.100"
 
 #- script: dotnet build --configuration $(buildConfiguration)
 #    workingDirectory:$(workingDirectory)
