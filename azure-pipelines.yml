@@ -4,14 +4,20 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  - task: CmdLine@2
+    inputs:
+      script: |
+        echo  '$(System.DefaultWorkingDirectory)'
+        dir
+
+#- script: dotnet build --configuration $(buildConfiguration)
+#  displayName: 'dotnet build $(buildConfiguration)'
