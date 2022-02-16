@@ -34,7 +34,7 @@ export const AskPage = () => {
     const result = await postQuestion({
       title: data.title,
       content: data.content,
-      userName: 'Miguexxx',
+      userName: 'Miguexx',
       created: new Date(),
     });
     setSucessfullySubmited(result ? true : false);
