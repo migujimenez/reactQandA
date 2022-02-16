@@ -1,4 +1,6 @@
 {
   "baseUrl": "http://localhost:3000",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "waitForAnimations": false,
+  "animationDistanceThreshold": 50
 }
