@@ -11,6 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  workingDirectory: '$(Build.SourcesDirectory)/qanda'
 
 steps:
 - task: UseDotNet@2
@@ -18,5 +19,5 @@ steps:
     packageType: 'sdk'
     version: '5.0.100'
 - script: dotnet build --configuration $(buildConfiguration) 
-    workingDirectory: reactqanda/qanda
+    workingDirectory:$(workingDirectory)
     displayName: 'backend build'
