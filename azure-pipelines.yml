@@ -13,11 +13,10 @@ variables:
   buildConfiguration: "Release"
 
 steps:
-  - task: CmdLine@2
+  - task: useDotNet@2
     inputs:
-      script: |
-        echo  '$(System.DefaultWorkingDirectory)'
-        dir
-
-#- script: dotnet build --configuration $(buildConfiguration)
-#  displayName: 'dotnet build $(buildConfiguration)'
+      packageType: "sdk"
+      version: "5.0.100"
+  - script: dotnet build --configuration $(buildConfiguration)
+    workingDirectory: backend
+    displayName: "backend build"
