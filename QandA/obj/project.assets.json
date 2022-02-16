@@ -7830,11 +7830,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MyApps\\reactQandA\\Backend\\QandA\\QandA.csproj",
+      "projectUniqueName": "C:\\MyApps\\reactQandA\\QandA\\QandA.csproj",
       "projectName": "QandA",
-      "projectPath": "C:\\MyApps\\reactQandA\\Backend\\QandA\\QandA.csproj",
+      "projectPath": "C:\\MyApps\\reactQandA\\QandA\\QandA.csproj",
       "packagesPath": "C:\\Users\\migue\\.nuget\\packages\\",
-      "outputPath": "C:\\MyApps\\reactQandA\\Backend\\QandA\\obj\\",
+      "outputPath": "C:\\MyApps\\reactQandA\\QandA\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

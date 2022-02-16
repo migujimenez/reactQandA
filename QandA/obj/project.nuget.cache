@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GAsMeG/ZhP4dnzlnu1LoYvXJHDZ1JIWXSFaciyUB/9i8gfMPxBjk7jUigMUxN6ossB0XgvJDEtTE+lvE3HmTqA==",
+  "dgSpecHash": "FAh64/hQahn9lhdax6I4Pcz771XyE/ZZWOVuv4ducGUR2OCX9lWqcfdwmOo8XmWfBoFTvRkXaufByfIwSOV3Dg==",
   "success": true,
-  "projectFilePath": "C:\\MyApps\\reactQandA\\Backend\\QandA\\QandA.csproj",
+  "projectFilePath": "C:\\MyApps\\reactQandA\\QandA\\QandA.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\migue\\.nuget\\packages\\azure.core\\1.6.0\\azure.core.1.6.0.nupkg.sha512",
     "C:\\Users\\migue\\.nuget\\packages\\azure.identity\\1.3.0\\azure.identity.1.3.0.nupkg.sha512",
