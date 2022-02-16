@@ -1,7 +1,0 @@
-{
-  "baseUrl": "https://myqandamjstg.azurewebsites.net",
-  "integrationFolder": "integration",
-  "pluginsFile": "plugins/index.js",
-  "supportFile": "support/index.js",
-  "chromeWebSecurity": false
-}
