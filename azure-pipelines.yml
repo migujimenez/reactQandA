@@ -4,20 +4,25 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
-  buildConfiguration: 'Release'
-  workingDirectory: '$(Build.SourcesDirectory)/qanda'
+  buildConfiguration: "Release"
+  #workingDirectory: '$(Build.SourcesDirectory)/qanda'
 
 steps:
-- task: UseDotNet@2
-  inputs: 
-    packageType: 'sdk'
-    version: '5.0.100'
-- script: dotnet build --configuration $(buildConfiguration) 
-    workingDirectory:$(workingDirectory)
-    displayName: 'backend build'
+  - task: UseDotNet@2
+    inputs:
+      packageType: "sdk"
+      version: "5.0.100"
+  - script: |
+      echo  '$(System.DefaultWorkingDirectory)'
+      dir
+      dir qanda
+
+#- script: dotnet build --configuration $(buildConfiguration)
+#    workingDirectory:$(workingDirectory)
+#    displayName: 'backend build'
