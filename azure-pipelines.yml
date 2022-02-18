@@ -48,4 +48,4 @@ steps:
     inputs:
       command: 'custom'
       workingDir: 'frontend'
-      customCommand: 'run watch'
+      customCommand: 'rebuild'
