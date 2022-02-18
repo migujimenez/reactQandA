@@ -43,14 +43,17 @@ steps:
   - script: npm install
     workingDirectory: frontend
     displayName: "frontend install dependencies"
-  - script: npm run build:staging
+  - script: npm run test:ci
     workingDirectory: frontend
-    displayName: "frontend staging build"
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: "frontend/build"
-      includeRootFolder: false
-      archiveType: zip
-      archiveFile: "$(Build.ArtifactStagingDirectory)/frontend-staging/build.zip"
-      replaceExistingArchive: true
-      displayName: "frontend staging zip files"
+    displayName: "frontend test"
+#  - script: npm run build:staging
+#    workingDirectory: frontend
+#    displayName: "frontend staging build"
+#  - task: ArchiveFiles@2
+#    inputs:
+#      rootFolderOrFile: "frontend/build"
+#      includeRootFolder: false
+#      archiveType: zip
+#      archiveFile: "$(Build.ArtifactStagingDirectory)/frontend-staging/build.zip"
+#      replaceExistingArchive: true
+#      displayName: "frontend staging zip files"
