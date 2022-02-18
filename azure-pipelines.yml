@@ -44,8 +44,9 @@ steps:
     workingDirectory: frontend
     displayName: "frontend install dependencies"
   - task: Npm@1
+    displayName: "frontend test"
     inputs:
-      command: run test:ci
+      command: "run test:ci"
       workingDir: frontend
 #  - script: npm run build:staging
 #    workingDirectory: frontend
