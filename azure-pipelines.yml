@@ -23,7 +23,7 @@ steps:
   - script: dotnet test
     workingDirectory: Backend
     displayName: "backend test"
-  - script: dotnet publish -c ${buildConfiguration} --self-contained true -r win-x86
+  - script: dotnet publish -c $(buildConfiguration) --self-contained true -r win-x86
     workingDirectory: Backend
     displayName: "backend publish"
   - task: ArchiveFiles@2
@@ -31,6 +31,6 @@ steps:
       rootFolderOrFile: "Backend/bin/Release/net5.0/win-x86/publish"
       includeRootFolder: false
       archiveType: zip
-      archiveFile: "${Build.ArtifactStagingDirectory}/Backend/${Build.BuildId).zip"
+      archiveFile: "$(Build.ArtifactStagingDirectory)/Backend/${Build.BuildId).zip"
       replaceExistingArchive: true
       displayName: "backend zip files"
