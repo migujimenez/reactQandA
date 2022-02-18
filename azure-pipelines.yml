@@ -46,8 +46,9 @@ steps:
   - task: Npm@1
     displayName: "frontend test"
     inputs:
-      command: "test:ci"
+      command: "custom"
       workingDir: frontend
+      customCommand: "test:ci"
 #  - script: npm run build:staging
 #    workingDirectory: frontend
 #    displayName: "frontend staging build"
