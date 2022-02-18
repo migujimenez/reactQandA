@@ -46,6 +46,11 @@ steps:
       command: install
       workingDir: frontend
   - task: Npm@1
+    displayName: npm rebuild
+    inputs:
+      command: rebuild
+      workingDir: frontend
+  - task: Npm@1
     displayName: "frontend test"
     inputs:
       command: "custom"
