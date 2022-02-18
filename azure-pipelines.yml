@@ -49,3 +49,8 @@ steps:
       command: 'custom'
       workingDir: 'frontend'
       customCommand: 'rebuild'
+  - task: Npm@1
+    inputs:
+      command: 'custom'
+      workingDir: 'frontend'
+      customCommand: 'run test:ci'
