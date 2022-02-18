@@ -34,3 +34,8 @@ steps:
       archiveFile: "$(Build.ArtifactStagingDirectory)/Backend/${Build.BuildId).zip"
       replaceExistingArchive: true
       displayName: "backend zip files"
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: "$(Build.ArtifactStagingDirectory)/Backend"
+      artifactName: "Backend"
+      displayName: "backend publish to pipeline"
