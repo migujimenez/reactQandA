@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
-    <IsPackable>false</IsPackable>
+	<RuntimeIdentifiers>win-x86;win10-x64</RuntimeIdentifiers>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backend\QandA\QandA.csproj" />
+    <ProjectReference Include="..\Backend\QandA\QandA.csproj" GlobalPropertiesToRemove="SelfContained"/>
   </ItemGroup>
 
 </Project>
