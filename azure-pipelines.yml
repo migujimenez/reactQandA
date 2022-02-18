@@ -48,7 +48,7 @@ steps:
     inputs:
       command: "custom"
       workingDir: frontend
-      customCommand: "test:ci"
+      customCommand: "run test:ci"
 #  - script: npm run build:staging
 #    workingDirectory: frontend
 #    displayName: "frontend staging build"
