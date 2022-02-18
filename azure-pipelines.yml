@@ -40,17 +40,17 @@ steps:
       artifactName: "Backend"
       displayName: "backend publish to pipeline"
 
-  - script: npm install
-    workingDirectory: frontend
-    displayName: "frontend install dependencies"
-  - script: npm run test:ci
-    workingDirectory: frontend
-#  - task: Npm@1
-#    displayName: "frontend test"
-#    inputs:
-#      command: "custom"
-#      workingDir: frontend
-#      customCommand: "run test:ci"
+  - task: Npm@1
+    displayName: npm install
+    inputs:
+      command: install
+      workingDir: frontend
+  - task: Npm@1
+    displayName: "frontend test"
+    inputs:
+      command: "custom"
+      workingDir: frontend
+      customCommand: "run test:ci"
 #  - script: npm run build:staging
 #    workingDirectory: frontend
 #    displayName: "frontend staging build"
