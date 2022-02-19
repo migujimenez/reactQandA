@@ -11,3 +11,11 @@ Unit testing with XUnit and Jest.
 Integration testing with Cypress. 
 Deployed in Azure Resource Group.
 CI/CD with Azure DevOps.
+
+
+***Issues faced***
+1. In react, registry code is different. Header.tsx line 77
+2. Backend was OK
+3. Auth0 was OK
+4. Unit test with Cypress had to change code to make it work
+5. ADO Pipeline Node steps added through pipeline
