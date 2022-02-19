@@ -33,12 +33,10 @@ steps:
       archiveType: zip
       archiveFile: "$(Build.ArtifactStagingDirectory)/Backend/${Build.BuildId).zip"
       replaceExistingArchive: true
-      displayName: "backend zip files"
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: "$(Build.ArtifactStagingDirectory)/Backend"
       artifactName: "Backend"
-      displayName: "backend publish to pipeline"
 
   - task: Npm@1
     inputs:
@@ -59,3 +57,21 @@ steps:
       command: 'custom'
       workingDir: 'frontend'
       customCommand: 'run build:staging'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: "frontend/build"
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: "$(Build.ArtifactStagingDirectory)/frontend-staging/build.zip"
+      replaceExistingArchive: true
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: "frontend/cypress"
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: "$(Build.ArtifactStagingDirectory)/frontend-staging/tests.zip"
+      replaceExistingArchive: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: "$(Build.ArtifactStagingDirectory)/frontend-staging"
+      artifactName: "frontend-staging"
