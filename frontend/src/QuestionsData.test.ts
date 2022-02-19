@@ -31,7 +31,7 @@ test('When mapQuestionFromServer is called with question and answers, created sh
         answerId: 1,
         content: 'test',
         userName: 'test',
-        created: '2021-01-01T05:00:00.000Z',
+        created: '2021-01-01T00:00:00.000Z',
       },
     ],
   });
