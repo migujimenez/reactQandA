@@ -54,3 +54,8 @@ steps:
       command: 'custom'
       workingDir: 'frontend'
       customCommand: 'run test:ci'
+  - task: Npm@1
+    inputs:
+      command: 'custom'
+      workingDir: 'frontend'
+      customCommand: 'run build:staging'
