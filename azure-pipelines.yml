@@ -75,3 +75,19 @@ steps:
     inputs:
       pathToPublish: "$(Build.ArtifactStagingDirectory)/frontend-staging"
       artifactName: "frontend-staging"
+  - task: Npm@1
+    inputs:
+      command: 'custom'
+      workingDir: 'frontend'
+      customCommand: 'run build:production'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: "frontend/build"
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: "$(Build.ArtifactStagingDirectory)/frontend-production/build.zip"
+      replaceExistingArchive: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: "$(Build.ArtifactStagingDirectory)/frontend-production"
+      artifactName: "frontend-production"      
