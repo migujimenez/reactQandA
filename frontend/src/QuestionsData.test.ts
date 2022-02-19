@@ -6,7 +6,7 @@ test('When mapQuestionFromServer is called with question, created should be turn
     title: 'test',
     content: 'test',
     userName: 'test',
-    created: '2021-01-01T05:00:00.000Z',
+    created: '2021-01-01T00:00:00.000Z',
     answers: [],
   });
   expect(result).toEqual({
@@ -25,7 +25,7 @@ test('When mapQuestionFromServer is called with question and answers, created sh
     title: 'test',
     content: 'test',
     userName: 'test',
-    created: '2021-01-01T05:00:00.000Z',
+    created: '2021-01-01T00:00:00.000Z',
     answers: [
       {
         answerId: 1,
